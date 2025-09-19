@@ -1,0 +1,46 @@
+Why is Next js a framework and react js is not.
+what is a function?
+why a function?
+function declaration vs function expression.
+what are arrow functions?
+what is the advantage of using arrow functions?
+ - in arrow functions we can use the 'this' keyword.
+
+Basic and Dynamic Default parameters.
+
+Rest and spread operators.(reserved for a separate class)
+
+Lexical code: where the variable lives.
+    Global scope
+    Function scope
+    Block scope
+
+Hoisting:
+Closures: Functions Remember their environment.
+
+Question 3: create a form with input field and a submit button. Use javascript to validate the form and display an error message if the input is invalid.
+
+what does e.preventDefault() do?
+
+var from = document.getElementById('form');
+var ints = document.getElementById('input[type="text"]');
+var h4 = document.quesrySelector('h4');
+form.addEventListener('submit', function(e){
+    e.preventDefault();
+    for (var i = 0; i < ints.length; i++){
+        if (ints[i].value.trim() === ''){
+            h4.textContent = "Error some fields are black";
+            h4.style.color = "red";
+        }
+        else{
+            h4.textContent = "Form submitted successfully";
+            h4.style.color = "green";
+        }
+
+        document.appendChild(h4);
+    
+    }
+});
+
+
+question 4: Create a unordered list. Allow users to add and remove list items dynamically using button.
