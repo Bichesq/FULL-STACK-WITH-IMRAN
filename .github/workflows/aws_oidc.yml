@@ -1,5 +1,40 @@
-- name: Configure AWS credentials
-  uses: aws-actions/configure-aws-credentials@v2
-  with:
-    role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.ROLE_NAME }}
-    aws-region: us-east-1
+name: Deploy static site to S3
+
+on:
+  push:
+    branches:
+      - react/counter
+
+permissions:
+  id-token: write    # enables OIDC authentication
+  contents: read     # allows the workflow to clone the repository
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build site
+        run: npm run build
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.OIDC_ROLE_NAME }}
+          aws-region: us-east-1
+
+      - name: Sync build output to S3
+        run: aws s3 sync ./dist s3://${{ secrets.S3_BUCKET }}/ --delete --cache-control "public, max-age=0, must-revalidate"
+
+
